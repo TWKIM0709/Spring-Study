@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!-- 
+	객체의 생성과 조립(주입)
+	
+	Spring 은 자신만의 컨테이너를 제공 (Spring 전용 메모리 공간 ) 안에 
+	xml 또는 annotation을 통해 객체를 생성하고 조립하는 과정을 수행(객체간의 관계 설정)
+	
+	컨테이나 안에 생성된 객체를 불러서 >> getBean() 함수로
+	
+	: IOC 컨테이너 (제어의 역전)
+	코딩의 주체가 [Spring]이 됨
+	: 작은 단위의 부품을 만들고 놓고 그것을 조립하는 행위 (레고블럭)
+	
+		MyBean mybean = new MyBean();
+		MyBean mybean2 = new MyBean("hong");
+		MyBean mybean3 = new MyBean("hong");
+ -->
+	<bean id="mybean" class="DI_05_Spring.MyBean"></bean>
+	<bean id="mybean2" class="DI_05_Spring.MyBean">
+		<constructor-arg value="hong"></constructor-arg>
+	</bean>
+	<bean id="mybean3" class="DI_05_Spring.MyBean"></bean>
+	
+	<!-- 싱글톤 만드는 방법 -->
+	<bean id="single" class="DI_05_Spring.Singleton" factory-method="getInstance"></bean>
+	<!-- 
+		SpringFramework 3.x.x 버전까지는 factory-method 반드시 명시해야함
+		SpringFramework 4.x.x 버전부터는 생략해도 알아서 해줌
+	 -->
+</beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+<!-- 
+@Qualifier
+목적 : @Autowired의 목적에서 동일 타입의 빈객체가 존재시 특정빈을 삽입할 수 있게 설정한다. 
+설정위치 : @Autowired 어노테이션과 함께 사용된다.
+추가설정 : 동일타입의 빈객체 설정에서 <qualifier value="[alias명]" />를 추가하여 준다.
+옵션 : name - alias명
+ -->
+	<!-- 어노테이션 방식 -->
+	<context:annotation-config/>
+	<!-- <bean id="recorder" class="DI_Annotation_02.Recorder"></bean> -->
+	<bean id="monitorViewer" class="DI_Annotation_02.MonitorViewer"></bean>
+			<bean id="xx" class="DI_Annotation_02.Recorder">
+				<qualifier value="recoder_1"></qualifier>
+			</bean>
+			<bean id="yy" class="DI_Annotation_02.Recorder">
+				<qualifier value="recoder_2"></qualifier>
+			</bean>
+</beans>

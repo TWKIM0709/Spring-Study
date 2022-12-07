@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+<!--
+객체의 생성과 조립(주입)
+
+spring 은 자신만의 컨테이너를 제공 (spring 전용 메모리 공간) 안에
+xml 또는 annotation를 통해서 객체를 생성하고 조립하는 과정을 수행 (객체간의 관계 설정)
+
+컨테이너 안에 생성돤 객체를 불러서 .... getbean() 함수
+
+:IOC 컨테이너 (제어의 역전)
+내가 주도했던 코드에서 Spring 이 주체 .....
+:작은 단위의 부품을 만들고 놓고 그 것을 조립하는 행위 (레고블럭)
+	
+1. DataSourceFactroy 빈객체
+2. jdbc.properties 파일을 read
+3. DataSourceFactroy setter 함수를 통해 read 한 value 주입
+
+KEY POINT
+xml 설정 파일에서 특정 [파일]을 read 할려면 Spring 제공하는 Context 자원 사용
+
+xmlns:context="http://www.springframework.org/schema/context"
+context 접두어를 가지고 기능 사용가능 	   
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context-4.3.xsd	
+-->
+	<context:property-placeholder location="classpath:DI_11_Spring/jdbc.properties" />
+	<bean id="dataSourceFactory" class="DI_11_Spring.DataSourceFactory">
+		<property name="jdbcdriver"  value="${jdbc.driver}"></property>
+		<property name="jdbcurl"     value="${jdbc.url}"></property>
+		<property name="username"    value="${jdbc.username}"></property>
+		<property name="password"    value="${jdbc.password}"></property>
+	</bean>
+	
+	
+</beans>

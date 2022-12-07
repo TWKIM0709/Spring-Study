@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans.xsd">
+	   
+	   <bean class="Spring_DI4.NewRecord"  id="record"></bean>
+	   
+	   <bean class="Spring_DI4.NewRecordView"  id="view">
+	   		<property name="record" ref="record"></property>
+	   </bean>
+</beans>
+
+

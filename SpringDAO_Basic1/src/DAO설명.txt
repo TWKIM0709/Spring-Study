@@ -1,0 +1,86 @@
+--토비의 스프링 예제 활용
+
+-실습
+1. User (DTO) > VO / DOMAIN
+2. User (DAO)
+3. User (main 함수) : program.java
+4. Oracle Driver (ojdbc6.jar)
+5. Oracle Table 만들기
+   create table users
+	(
+  		id varchar2(20) primary key,
+  		name varchar2(20) not null,
+  		password varchar2(20) not null
+	);	
+6. 오라클 계정 생성
+-- USER SQL
+	CREATE USER spring IDENTIFIED BY 1004 
+	DEFAULT TABLESPACE "USERS"
+	TEMPORARY TABLESPACE "TEMP";
+
+-- QUOTAS
+	ALTER USER spring QUOTA UNLIMITED ON USERS;
+
+-- ROLES
+	GRANT "CONNECT" TO spring ;
+	GRANT "RESOURCE" TO spring ;
+
+--------------------------------------------------
+소프트웨어 개발
+
+1. 소프트웨어 설계는 미래에 대한 대비 (모든 것은 변한다) 
+2. App 변화에 대응대는 코드 작업
+
+1. [관심사] 의 분리
+-UserDao 클래스
+--연결작업
+--데이터 작업을 하는 함수에 관심
+--자원해제(연결객체)
+
+-UserDao 클래스
+문제점)
+1. 관심이 현재 분리되어 있다(중복)(DB연결)
+> 해결 방안은 중복된 관심은 하나로 모으자
+> 공통 함수(반복된 코드) : 리팩토링
+> 유지보수 편리성
+> 리펙토링 
+(기존의 코드 변화에 의해서 외부 동작 방식에는 변화가 없고  내부 구조를 변경해서 재구성하는 기술)        
+> private Connection getConnection()
+
+2. 예외 처리 코드
+     자원을 사용하는 쪽에서 강제 처리되도록 하는 것이 일반적
+ --UserDao 클래스 안에 add 함수  
+ --public void add(User user) throws ClassNotFoundException , SQLException
+ 
+ --사용 (program.java)
+ static void main(){
+     UserDao dao = new UserDao();
+     try{
+    
+        dao.add(); //강제 try >> 프로그램이 강제 종료 되지 않도록
+     
+     }catch(Exception e){
+     
+     }
+      
+ }  
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	

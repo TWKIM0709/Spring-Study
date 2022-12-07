@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--
+객체의 생성과 조립(주입)
+
+spring 은 자신만의 컨테이너를 제공 (spring 전용 메모리 공간) 안에
+xml 또는 annotation를 통해서 객체를 생성하고 조립하는 과정을 수행 (객체간의 관계 설정)
+
+컨테이너 안에 생성돤 객체를 불러서 .... getbean() 함수
+
+:IOC 컨테이너 (제어의 역전)
+내가 주도했던 코드에서 Spring 이 주체 .....
+:작은 단위의 부품을 만들고 놓고 그 것을 조립하는 행위 (레고블럭)
+	
+JAVA 코드
+
+	    BookClient bookclient = new BookClient();
+		
+		Properties prop = new Properties();
+		prop.setProperty("server", "192.168.0.29");
+		prop.setProperty("connectiontimeout", "20");
+		
+		bookclient.setConfig(prop);
+	
+-->
+	<bean id="bookClient" class="DI_10_Spring.BookClient">
+		<property name="config">
+			<props><!-- Properties prop = new Properties() -->
+				<prop key="server">192.168.0.29</prop>
+				<prop key="connectiontimeout">20</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,160 @@
+--토비의 스프링 예제 활용
+
+-실습
+1. User (DTO)
+2. User (DAO)
+3. User (main 함수) : program.java
+4. Oracle Driver (ojdbc6.jar)
+5. Oracle Table 만들기
+   create table users
+	(
+  		id varchar2(20) primary key,
+  		name varchar2(20) not null,
+  		password varchar2(20) not null
+	);	
+6. 오라클 계정 생성
+-- USER SQL
+	CREATE USER spring IDENTIFIED BY 1004 
+	DEFAULT TABLESPACE "USERS"
+	TEMPORARY TABLESPACE "TEMP";
+
+-- QUOTAS
+	ALTER USER spring QUOTA UNLIMITED ON USERS;
+
+-- ROLES
+	GRANT "CONNECT" TO spring ;
+	GRANT "RESOURCE" TO spring ;
+
+--------------------------------------------------
+소프트웨어 개발
+
+1. 소프트웨어 설계는 미래에 대한 대비 (모든 것은 변한다)
+2. App 변화에 대응대는 코드 작업
+
+1. [관심사] 의 분리
+-UserDao 클래스
+--연결작업
+--데이터 작업을 하는 함수에 관심
+--자원해제(연결객체)
+
+-UserDao 클래스
+문제점)
+1. 관심이 현재 분리되어 있다(중복)(DB연결)
+> 해결 방안은 중복된 관심은 하나로 모으자
+> 공통 함수(반복된 코드) : 리팩토링
+> 유지보수 편리성
+> 리펙토링 
+(기존의 코드 변화에 의해서 외부 동작 방식에는 변화가 없고
+ 내부 구조를 변경해서 재구성하는 기술)        
+> private Connection getConnection()
+
+2. 예외 처리 코드
+   자원을 사용하는 쪽에서 강제 처리되도록 하는 것이 일반적
+   
+
+1.2
+요구사항 발생
+소프트웨어 판매 (고객사 마다 요구사항)
+1.N사(Oracle) , D사(Mysql) DB연결 방법이 틀리다
+2.사장님 : UserDao 클래스의 소스는 노출이 되어서는 안된다
+
+해결방법)
+1. 상속 : UserDao 상속하는 클래스를 만들고
+          그 클래스 안에서 각 벤더의 연결 구현하도록
+ 
+2. 기존의 코드 (UserDao : add() , get() 그대로 유지)
+   변경이 되는 코드 (getConnetion() 함수의 내부 코드)
+   
+result : UserDao 추상클래스 (DB연결 메서는 강제 구현 (추상메서드)
+                          구현하는 D사
+                          구현하는 N사 Dao 를 작성 
+
+3. program.java 코드 변경 작업   (공통 -> 각 벤더의 Dao 사용)
+                         
+
+문제점 )
+1. 상속 : 단일 상속(계층적 상속) > 다중 상속을 지원하지 않는다 제기
+2. 상속관계 (부모 클래스 와 자식클래스)  관계가 밀접하다 
+   (부모의 클래스 변화에 의한 자식클래스의 변화가 불가피)
+   
+
+> 상속 관계를 파괴하자
+->그러면서 요구사항은 만족   
+
+------------------------------------------
+3. 상속을 사용하지 않고 해결하기
+   -문제 : DB연결 코드
+   -별도의 클래스 파일 만들어서 그 안에 연결에 대한 함수 별도 구현
+   -SimpleConnectionMaker 클래스 생성
+    (DB연결에 대한 함수)
+
+
+   UserDao 가  SimpleConnectionMaker 의존 관계로 정의
+   -N사 , D사 에는  UserDao 는  class 파일로
+   -SimpleConnectionMaker java 제공 수정해서 사용해라 
+   
+      고객사
+   UserDao > class 파일 형태로 ...
+   SimpleConnectinMaker.java > 소스 제공 > 연결 코드 수정해서  사용
+   
+   UserDao 클래스와  SimpleConnectionMaker 클래스와의 관계
+   
+   
+   
+   
+   1.상속(is ~a)
+   2.포함 (has ~a) 
+       의존(method 안에서)  : 함수 안에서 ......
+       연관  - 복합(자동차는 엔진을 가지고 있다) , class Car {  new  Engine }
+                   집합(학교는 학생을 가지고 있다)   , class School { Student st; add(Student st){ this.st  =st; } }                       
+                          
+	포함 - 복합연관
+	class Car{
+		Engine e;
+		Car(){
+			e = new Engine();
+		}
+	}
+	포함 - 집합 연관
+	class Car{
+		Engine e;
+		Car(Engine e){
+			this.e = e;
+		}
+	}
+	
+class UserDao{                    
+    private SimpleConnectionMaker simpleconnectionmaker;
+	public UserDao(){
+		this.simpleconnectionmaker = new SimpleConnectionMaker();
+	}
+}	      
+   
+                          
+----------------------------------------------------------------   
+class UserDao{                    
+    private SimpleConnectionMaker simpleconnectionmaker;
+	public UserDao(SimpleConnectionMaker aaa){
+		this.simpleconnectionmaker = aaa;
+	}
+}	
+----
+main 함수 
+SimpleConnectionMaker m = new SimpleConnectionMaker();
+UserDao  dao = new UserDao(m)
+------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	

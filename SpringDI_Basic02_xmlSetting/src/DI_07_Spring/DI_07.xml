@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+		ProtocolHandler handler = new ProtocolHandler();
+		List<MyFilter> list = new ArrayList<MyFilter>();
+		
+		list.add(new EncFilter());
+		list.add(new HeaderFilter());
+		list.add(new ZipFilter());
+		
+		1단계)
+			필요한 모든 bean 객체를 생성해라 ( new 자원 모두 bean 생성 )
+		2단계)
+			사용자가 직접 만들지 않은 객체(JAVA API) >> Spring이 제공 해줌
+			>>xml 설정에서는 element 제공
+				>> <list> , <map> , <set>
+	 -->
+	 <!-- <bean id="encFilter" class="DI_07_Spring.EncFilter"></bean>
+	 <bean id="headerFilter" class="DI_07_Spring.HeaderFilter"></bean>
+	 <bean id="zipFilter" class="DI_07_Spring.ZipFilter"></bean>
+	 
+	 <bean id="protocolHandler" class="DI_07_Spring.ProtocolHandler">
+	 	<property name="filters">
+	 		<list>
+	 			<ref bean="encFilter"/>
+	 			<ref bean="headerFilter"/>
+	 			<ref bean="zipFilter"/>
+	 		</list>
+	 	</property>
+	 </bean> -->
+	 <bean id="protocolHandler" class="DI_07_Spring.ProtocolHandler">
+	 	<property name="filters">
+	 		<list>
+	 			<bean class="DI_07_Spring.EncFilter"></bean>
+				<bean class="DI_07_Spring.HeaderFilter"></bean>
+				<bean class="DI_07_Spring.ZipFilter"></bean>
+	 		</list>
+	 	</property>
+	 </bean>
+</beans>

@@ -1,0 +1,12 @@
+Spring
+
+1. 생성자 주입(constructor injection)
+2. setter 함수 주입 (setter injection)
+3. 주입 대상
+
+3.1 값(value) : "A" , 100
+3.2 객체(bean) : <ref bean=""/>
+3.3 개발자가 만든 객체가 아닌 JAVA AIP가 제공하는 객체
+		Collection : List , Set , Map
+		
+		

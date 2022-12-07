@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+		ProtocolHandler handler = new ProtocolHandler();
+		List<MyFilter> list = new ArrayList<MyFilter>();
+		
+		list.add(new EncFilter());
+		list.add(new HeaderFilter());
+		list.add(new ZipFilter());
+		
+		1단계)
+			필요한 모든 bean 객체를 생성해라 ( new 자원 모두 bean 생성 )
+		2단계)
+			사용자가 직접 만들지 않은 객체(JAVA API) >> Spring이 제공 해줌
+			>>xml 설정에서는 element 제공
+				>> <list> , <map> , <set>
+				
+	JobExecute jobExecute = new JobExecute("hong", 100);
+		JobExecute jobExecute2 = new JobExecute("lim", 100L);
+		JobExecute jobExecute3 = new JobExecute("hong", "lim");
+		
+		ArticleDao articledao = new OracleDao();
+		jobExecute.setArticledao(articledao);
+		
+		jobExecute.setData(500);
+	 -->
+	
+	<bean id="articleDao" class="DI_08_Spring.ArticleDao"></bean>
+	<bean id="jobExecute" class="DI_08_Spring.JobExecute">
+		<constructor-arg>				<!-- 생성자 파라미터 1 -->
+			<value>hong</value>
+		</constructor-arg>
+		<constructor-arg>				<!-- 생성자 파라미터 2 -->
+			<value type="int">100</value>
+		</constructor-arg>
+		<property name="articledao"><!-- setArticleDao  -->
+			<ref bean="articleDao"/>
+		</property>
+		<property name="data">			<!-- setData -->
+			<value>500</value>
+		</property>
+	</bean>
+	<!-- 
+		Spring - xml 설정에서 타입을 명시하지 않는 값은 모두 [문자]로 받는다
+	 -->
+</beans>

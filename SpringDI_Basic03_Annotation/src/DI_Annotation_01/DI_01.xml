@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<!-- 
+	
+		오토와이어 ? : 같은 타입이 있으면 자동 주입(자동 setter 설정)
+		
+	 -->
+<!--  XML 방식
+ 	<bean id="recorder" class="DI_Annotation_01.Recorder"></bean>
+	<bean id="monitorViewer" class="DI_Annotation_01.MonitorViewer">
+		<property name="recorder">
+			<bean class="DI_Annotation_01.Recorder"></bean>
+			<ref bean="recorder"/>
+		</property>
+	</bean>	 -->
+<!-- 
+@Autowired > Type기반
+	목적 : 의존관계를 자동설정할 때 사용하며 [타입을 이용]하여 의존하는 객체를 삽입해 준다. 
+	그러므로 (IOC Container) 해당 타입의 빈객체가 존재하지 않거나 또는 2개 이상 존재할 경우 
+	스프링은 예외를 발생시키게 된다.
+	
+	설정 위치 : 생성자, 필드, 메소드(굳이 setter메소드가 아니여도 된다)
+	new org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+	
+	*추가설정 : AutowiredAnnotationBeanPostProcessor 클래스를 빈으로 등록시켜줘야 한다. 
+	해당 설정 대신에 <context:annotation-config> 태그를 사용해도 된다.
+	
+	>> <bean id="" class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor">
+	>>> 배보다 배꼽이 크다...
+	
+	<context:annotation-config>
+	** Annotation 사용에 필요한 모든 클래스를 객체로 만들어서 컨테이너에 올려준다.
+	**장점 : 각각의 Annotation 사용시 별도의 빈 객체를 설명 할 필요가 없다.
+	**단점 : 사용하지 않는 빈 객체도 생성된다.
+	
+	작업을 위해서는 aop 필요
+	
+	@Autowrited 가 정상 작동 되지 않는 경우
+	1. injection 되는 타입 객체가 (bean) IOC 컨테이너 안에 없는 경우
+	2. IOC 컨테이너 안에 같은 타입 객체가 여러개 존재하는 경우
+			<bean id="a" class="DI_Annotation_01.Recorder"></bean>
+			<bean id="b" class="DI_Annotation_01.Recorder"></bean>
+			<bean id="c" class="DI_Annotation_01.Recorder"></bean>
+	2.1 IOC 컨테이너 안에 같은 타입 객체가 여러개 존재하더라도 [bean 객체의 id 값이 setter 함수의 parameter와 동일하면 자동 주입 성공]
+	
+		반대 : @Resource (by name) >> 객체 타입이 아닌 이름으로 자동 주입
+ -->
+	<!-- 어노테이션 방식 -->
+	<context:annotation-config/>
+	<bean id="recorder" class="DI_Annotation_01.Recorder"></bean>
+	<bean id="monitorViewer" class="DI_Annotation_01.MonitorViewer"></bean>
+	<!-- <bean id="a" class="DI_Annotation_01.Recorder"></bean>
+			<bean id="b" class="DI_Annotation_01.Recorder"></bean>
+			<bean id="c" class="DI_Annotation_01.Recorder"></bean> -->
+</beans>

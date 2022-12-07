@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!-- 
+		MessageBeanImpl messagebean = new MessageBeanImpl("hong");
+		messagebean.setGreeting("hello");
+		
+		<bean id="식별자(이름)" name="m1,m2" class="경로">
+		name >> 여러개 줄 수 있음
+						구분자 : [,] [공백] [;]
+ -->
+ 	<bean id="messagebean" name="m1,m2 m3;m4" class="DI_04_Spring.MessageBeanImpl">
+ 		<!--
+ 		 <constructor-arg>
+ 			<value>hong</value>new MessageBeanImpl("hong");
+ 		</constructor-arg>
+ 		name : setGreeting 함수를 구현하고 있는 멤버 필드명
+ 		<property name="greeting" >
+ 			<value>hello</value>
+ 		</property>
+ 		 -->
+ 		 <constructor-arg value="hong"></constructor-arg>
+ 		 <property name="greeting" value="hello"></property>
+ 	</bean>
+</beans>
+
+
