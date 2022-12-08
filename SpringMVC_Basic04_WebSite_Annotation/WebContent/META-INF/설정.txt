@@ -1,0 +1,10 @@
+1. Spring 관련 jar 로드
+2. 설정 (Web.xml) => DispatcherServlet 설정
+3. DispatcherServlet 사용하는 bean 설정 xml 파일 생성
+   (dispatcher-servlet.xml)
+4. Mapping 할 Controller 구성
+   ->행위당 하나씩 Controller 생성
+   4.1 : NoticeController(조회)
+   4.2 : NoticeDetailController(상세)
+   
+5. 시작점 : customer 폴더안에 notice.htm

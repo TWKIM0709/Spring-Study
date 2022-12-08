@@ -6,6 +6,31 @@
 </head>
 <body>
 	<h3>TEST_1</h3>
-	<a href="hello.do">hello.do 요청하기</a>
+	<a href="hello.do">hello.do 요청하기</a><hr>
+	
+	<h3>TEST_2</h3>
+	<h4>http 전송 : form || method : get , post >> 화면... 처리... 용도가 다름</h4>
+	<a href="article/newArticle.do">글쓰기</a><hr>
+	
+	<h3>Test_3</h3>
+	<h4>http 전송 : form || method : get , post + List(Collection)</h4>
+	<a href="order/order.do">주문하기 화면(order.do)</a><hr>
+	
+	<h3>Test_4</h3>
+	<h4>parameter 다루기 (@RequestParam)</h4>
+	Default : <a href="search/external.do">external.do</a><br>
+	p : <a href="search/external.do?p">external.do</a><br>
+	query 100: <a href="search/external.do?query=100">external.do</a><br>
+	p 200 : <a href="search/external.do?p=200">external.do</a><br><hr>
+	
+	<h3>Test_5</h3>
+	<h4>Spring Cookie 사용하기</h4>
+	<a href="cookie/make.do">make.do 서버 쿠키 전달</a><br>
+	<a href="cookie/view.do">view.do 쿠키 읽기</a><hr>
+	
+	<h3>Test_6</h3>
+	<h4>File : CommonsMultipartFile 을 사용한 Spring 파일 업로드</h4>
+	<a href="image/upload.do">image 파일 업로드</a>
+	
 </body>
 </html>
