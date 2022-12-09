@@ -1,0 +1,65 @@
+기존 : JSP 기반의 사이트 (DAO  , VO)
+
+고전적인 Spring 기반의 서비스
+
+
+
+Spring 사용 LIB :
+MAIN
+
+dist\안에 Jar import ....
+
+1. web.xml => Front Contoller : DispatcherServlet 구현
+           => URL 패턴 : *.htm
+
+2. 필요한 객체를 Load => 패턴을 가지고 있는 녀석들
+   사용자가 notice.htm
+   xml 하나 추가 ->     <servlet-name>dispatcher</servlet-name>
+   dispatcher-servlet.xml 생성
+   
+-------------------------------------------------------------------------------
+Spring 도 기존의 MVC 사용 
+Model 유지
+View 유지
+Controller =>  DispatcherServlet => 사용하는 서비스 class 제작
+
+3. Controller 역할을 하는 클래스 제작 
+   => NoticeController 클래스 
+   단 이 클래스는 implements Controller 구현 하여야 한다
+   =>handleRequest 메서드가 모든 처리 담당
+   =>글쓰기 -> 클래스
+   =>글상세 -> 클래스 
+   =>필요한 DAO 클래스도 참조 관계로 가지고 있다
+
+4.  NoticeController 인젝션 처리 통해 DispatcherServlet 사용할 수 있게
+    NoticeController 를 빈으로 등록  (페턴 구현)
+    사용하는 추가 class 에 대해서 setter 처리 할 수 있도록 ref=설정
+    
+    주의사항
+    <property name="noticeDao" ref="noticeDao"></property>   
+     =>name="noticeDao" => private NoticeDao noticeDao;
+     =>setter 동작 
+
+5. view 단처리 (JSTL and EL)
+   jar 추가
+   
+6. 기본적인 조회 처리 완료
+------------------------------------------------------------
+현재 추가적인 구현 : 상세보기  구현
+그런데 현재 사용하는 Spring 방식에서는 하나의 기능이(method) 구현 하기 위해서
+별도로 하나의 클래스 생성(controller) 상세를 처리하는 ....
+-> 그래서 annotation 사용하면 지금의 문제를 해결 가능 (하나의 클래스가 여러개의 기능)    
+   
+   
+   
+
+  
+   
+   
+   
+   
+   
+   
+   
+   
+     
