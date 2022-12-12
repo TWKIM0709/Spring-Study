@@ -1,0 +1,171 @@
+Spring.txt
+기존 : JSP 기반의 사이트 (DAO  , VO)
+
+고전적인 Spring 기반의 서비스
+
+Spring 사용 LIB :
+MAIN
+
+dist\안에 Jar import ....
+
+1. web.xml => Front Contoller : DispatcherServlet 구현
+           => URL 패턴 : *.htm
+
+2. 필요한 객체를 Load => 패턴을 가지고 있는 녀석들
+   사용자가 notice.htm
+   xml 하나 추가 ->     <servlet-name>dispatcher</servlet-name>
+   dispatcher-servlet.xml 생성
+   
+-------------------------------------------------------------------------------
+Spring 도 기존의 MVC 사용 
+Model 유지
+View 유지
+Controller =>  DispatcherServlet => 사용하는 서비스 class 제작
+
+3. Controller 역할을 하는 클래스 제작 
+   => NoticeController 클래스 
+   단 이 클래스는 implements Controller 구현 하여야 한다
+   =>handleRequest 메서드가 모든 처리 담당
+   =>글쓰기 -> 클래스
+   =>글상세 -> 클래스 
+   =>필요한 DAO 클래스도 참조 관계로 가지고 있다
+
+4.  NoticeController 인젝션 처리 통해 DispatcherServlet 사용할 수 있게
+    NoticeController 를 빈으로 등록  (페턴 구현)
+    사용하는 추가 class 에 대해서 setter 처리 할 수 있도록 ref=설정
+    
+    주의사항
+    <property name="noticeDao" ref="noticeDao"></property>   
+     =>name="noticeDao" => private NoticeDao noticeDao;
+     =>setter 동작 
+
+5. view 단처리 (JSTL and EL)
+   jar 추가
+   
+6. 기본적인 조회 처리 완료
+------------------------------------------------------------
+현재 추가적인 구현 : 상세보기  구현
+그런데 현재 사용하는 Spring 방식에서는 하나의 기능이(method) 구현 하기 위해서
+별도로 하나의 클래스 생성(controller) 상세를 처리하는 ....
+-> 그래서 annotation 사용하면 지금의 문제를 해결 가능 (하나의 클래스가 여러개의 기능)    
+   
+   
+--------------------------------------------------------------   
+현재 코드를 우리가 배운 방식으로 변환
+[SpringMVC_Basic03_Annotation]
+  
+
+Annotation변경
+
+@Controller
+@RequestMapping
+
+하나의 컨트롤러가 여러개의 요청 처리 하도록 변환
+>> CustomerController >> 게시판 목록보기 , 게시판 상세보기 함수 매핑을 통해서 완성
+
+@Controller
+class Board{
+	
+	@RequestMapping("/list.do")
+	void listBoard(){
+	}
+	
+	@RequestMapping("/insert.do")
+	void insertBoard(){
+	}
+
+}
+
+1. ncontroller 패키지 생성
+1.1 CustomerController 생성
+
+   
+[옵션]
+spring MVC의 Controller 클래스 선언을 단순화시켜준다. 
+스프링 컨트롤러, 서블릿을 상속할 필요가 없으며, @Controller로 등록된 클래스 파일에 대한 bean을 자동으로 생성해준다.
+ Controller로 사용하고자 하는 클래스에  @Controller 지정해 주면 component-scan으로 자동 등록된다.
+ <context:component-scan base-package="com.controller"/> 
+ @Controller 가 붙어있는 클래스를 자동 bean 등록   
+   
+
+   
+ @Contoller, @Service, @Repository, @Component 이 4가지 어노테이션은 
+ 모두 빈에 자동으로 등록하기 위해서 선언하는 어노테이션 입니다. 
+
+
+@Controller
+Presentation Layer에서 Contoller를 명시하기 위해서 사용
+
+@Service
+Business Layer에서 Service를 명시하기 위해서 사용
+
+@Repository 
+Data Layer에서 DAO를 명시하기 위해서 사용
+
+@Component
+그 외에 자동으로 스캔해서 등록하고 싶은 것들을 위해 사용
+
+ =========================================================
+ 
+ - newMemberDao, newNoticeDao는 줌
+ 
+   [SpringMVC_Basic06_WebSite_Annotation_jdbc_Template]
+   1. JdbcTemplate 기반 코드 변환
+   
+   2. 별도의 라이브러리 필요(jar)
+   		- spring-jdbc-5.3.6.jar
+   		- spring-tx-5.3.6.jar
+   		
+   3. 인터페이스 기반의 DAO 작업
+   >> MemberDao 인터페이스 구현 > NewMemberDao
+   >> NoticeDao 인터페이스 구현 > NewNoticeDao -> 이건 카페에
+   NewMemberDao, NewNoticeDao 은 JdbcTemplate 에 의존한다 ( 객체의 주소가 필요하다 ) 주입이 필요하다. -> 이건 카페에
+   
+   4. root 컨테이너를 구성하는 xml 생성 > applicationContext.xml
+   		공통빈을 구성
+
+	5. child 컨테이너 >> dispatcher-servlet.xml
+		applicationContext.xml >> listener
+		dispatcher-servlet.xml >> DispatcherServlet
+		
+	6. 다중 파일 업로드
+		- 설계 바뀜
+		- DB 테이블
+		alert table notices as FileSrc2 varchar2(500);
+		
+	6.1 DTO 바꾸기 ㅇ
+		private String filesrc2;
+		CommonsMultipartFile file2 하나 더 만들면 되죠 ... 2개... 3개... 가 아니라
+		
+		CommonsMultipartFile file 대신에
+		private List<CommonsMultipartFile> files;
+	
+	6.2 DAO에 SQL문 수정
+	
+	6.3 View 수정
+		noticeReg.jsp , noticeEdit.jsp
+		파일처리 (배열)
+		파일 1 >> <input type="file" name="files[0]"> ㅇ
+		파일 2 >> <input type="file" name="files[1]"> ㅇ
+		
+	6.4 CustomerController
+	-- 데이터 삽입 (insert) , 수정 (update)
+	
+	6.5 상세보기
+	파일 2개 보여주기 ㅇ
+	
+	>> 전체조회, 상세조회 (Template 형태로 코드 변환)
+	>> 글쓰기, 글 수정하기, 글 삭제...
+  
+   7. 회원 controller 작성
+   	>> JoinController -> 회원가입 화면, 처리
+   
+   8. 회원가입 처리 >> /joinus/join.htm
+   
+   
+   
+   
+   
+   
+   
+     

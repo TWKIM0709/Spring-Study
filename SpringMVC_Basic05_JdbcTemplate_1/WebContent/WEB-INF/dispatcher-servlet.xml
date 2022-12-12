@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!-- 
+<bean class="com.model.MemberDAOImpl">
+	<property name="jdbctemplate" ref="driverManagerDataSource"></property>
+</bean> 
+-->
+<context:annotation-config />
+<bean class="com.model.MemberDAOImpl"></bean>
+
+<!--  
+회원가입
+1. 회원가입 화면
+2. 회원가입 처리 (MemberDAOImpl  객체를 사용 ...)
+
+@Controller 
+JoinControler ... 자동 빈 
+<context:component-scan base-package="com.controler" />	
+-->
+<bean id="" class="com.controller.JoinController"></bean>
+
+
+<!--  
+로그인 처리하기
+1. 로그인 화면
+2. 로그인 처리 (session 처리)
+
+로그 아웃
+1. session.invaildate()
+-->
+<bean id="" class="com.controller.LoginController"></bean>
+<bean id="" class="com.controller.LogoutController"></bean>
+
+
+<!-- 
+회원검색
+1. 검색화면
+2. 검색결과
+
+ -->
+<bean id="" class="com.controller.MemberSearchController"></bean>
+
+</beans>
+
+
+
+
