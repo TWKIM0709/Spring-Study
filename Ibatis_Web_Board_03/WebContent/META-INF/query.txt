@@ -1,0 +1,11 @@
+CREATE TABLE guest(
+NO NUMBER , 
+NAME VARCHAR2(20), 
+pwd VARCHAR(20), 
+email VARCHAR(20), 
+home VARCHAR(20), 
+content VARCHAR(30), 
+regdate date)
+
+list.jsp (JSTL) 사용
+writeForm.jsp -> WriteOk.jsp

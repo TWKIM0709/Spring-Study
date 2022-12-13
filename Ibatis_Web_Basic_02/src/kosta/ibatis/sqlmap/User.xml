@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<!-- 가명칭을 부여해서 객체의 별칭을 부여  -->
+	<typeAlias alias="user" type="kosta.ibatis.dto.UserDto"/>
+	
+	<!--  
+		1.회원 테이블 전체 조회(Multi row > App > List<UserDto>
+		2.client.queryForList("selectAllUsers")
+		3.List<UserDto> 형식으로 return 
+	
+	    List<UserDto> return 결과를 가지는 select ...구문
+	    type="kosta.ibatis.dto.UserDto"
+	-->
+	<select id="selectAllUsers" resultClass="user">
+		select userid, username , userpwd , usercmt
+		from users
+		order by userid
+	</select>
+	
+	<!--  
+		1.회원 상세 조회 (Single row) , parameter userid값
+		2.원칙 : parameterClass="java.lang.String" >  Parameter 생략 (알아서 받을게)
+		3.default : parameter 하나는 값을 가지고 온다
+		(UserDto)client.queryForObject
+		생략하면 파라미터 하나가 있는 것으로 본다....
+		
+		날짜는 타임스탬프로??
+	-->
+	<select id="selectAllByUserid"   resultClass="user" >
+		select userid, username , userpwd , usercmt
+		from users
+		where userid=#userid#   <!--  내부적으로 타입  정수 >> userid=100  ,  문자  userid='홍길동'-->
+	</select>
+	
+	<!--
+		1.회원가입 (Insert)
+		2.가입 데이터 (UserDto)
+			private String userid;
+			private String username;
+			private String userpwd;
+			private String usercmt;
+	-->
+	<insert id="insertuser" parameterClass="user">
+		insert into users(userid, username,userpwd,usercmt)
+		values(#userid#,#username#,#userpwd#,#usercmt#)
+	</insert>
+	
+	<!-- 
+		1.회원수정(update)
+	 -->
+	 <update id="updateuser" parameterClass="user">
+	 	update users
+	 	set username=#username# , userpwd=#userpwd#
+	 	where userid=#userid#
+	 </update>
+	 
+	 <!-- 
+	 	1.회원삭제(delete)
+	 	2.Parameter 1개 (생략가능)
+	 	3.생략 : parameterClass="java.lang.String"
+	  -->
+	  <delete id="deleteuser" >
+	  	delete from users where userid=#userid#
+	  </delete>
+	  
+	  <!--  
+	  		create table T(
+	  		 id number primary key,
+	  		 name varchar2(20)
+	  		)
+	       1. id 값은 sequence 객체 사용
+	          create sequence se_num;
+	       
+	       2. insert into T(id,name)
+	          values(se_num.NEXTVAL,'홍길동')   
+	        
+	       3. select 결과를 이용해서 다른 쿼리를 실행할 경우 
+	          -다른 방법 : subquery 사용하면 selectkey 사용안해도 되요
+	        
+	      <insert id="insertT" parameterClass="dto.dtoT">
+		  	  <selectKey resultClass="int" keyProperty="num">
+		  	  	  select se_num.NEXTVAL from dual
+		  	  </selectKey>
+		  	  insert into T(id, name) values(#num#,#name#)
+	  	  </insert>
+	  	    	  
+	  	  
+	  	  
+	  	  <insert id="insertT" parameterClass="dto.dtoT">
+		  	  <selectKey resultClass="int" keyProperty="num">
+		  	  	  select nvl(max(id),0) + 1 from T
+		  	  </selectKey>
+		  	  insert into T(id, name) values(#num#,#name#)
+	  	  </insert>
+	  -->
+	  
+</sqlMap>
+
+
+
+
+
+
+
+
