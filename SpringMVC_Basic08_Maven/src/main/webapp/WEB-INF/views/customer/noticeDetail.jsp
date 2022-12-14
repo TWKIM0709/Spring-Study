@@ -66,12 +66,12 @@
 								첨부파일_1
 							</dt>
 							<dd class="article-detail-data">
-								${notice.fileSrc}
+								<a href="download.htm?p=upload&f=${notice.fileSrc}">${notice.fileSrc}</a>
 							</dd>
 						</dl>
 						<dl class="article-detail-row">
 							<dt class="article-detail-title">
-								첨부파일_2
+								<a href="download.htm?p=upload&f=${notice.fileSrc2}">${notice.fileSrc2}</a>
 							</dt>
 							<dd class="article-detail-data">
 								${notice.fileSrc2}

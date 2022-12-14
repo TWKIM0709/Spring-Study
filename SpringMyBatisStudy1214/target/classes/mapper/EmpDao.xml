@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.EmpDao">
+		<!-- 전체조회 -->
+	<select id="getEmpList" resultType="dto.Emp">
+		select empno , ename, job, mgr, hiredate , sal, comm, deptno from emp
+	</select>
+	<!-- 상세보기 -->
+	<select id="getEmpByEmpno" resultType="dto.Emp">
+		select empno , ename, job, mgr, hiredate , sal, comm, deptno from emp where empno like '%${empno}%'
+	</select>
+	<!-- 페이징 전체 조회 -->
+	<select id="getPagedEmpList" resultType="dto.Emp">
+		SELECT NO, EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO
+		FROM (
+				SELECT ROWNUM AS NO, EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO
+				FROM EMP
+				WHERE ROWNUM &lt;= ${param1}*${param2}
+			) 
+		WHERE NO >= ${param1}*${param2} - (${param2}-1)
+	</select>
+	<!-- 삽입 -->
+	<insert id="insertEmp" parameterType="dto.Emp">
+		insert into emp(empno, ename, job, mgr, hiredate, sal, comm, deptno)
+		values (#{empno},#{ename}, #{job}, #{mgr}, sysdate, #{sal}, #{comm}, #{deptno})
+	</insert>
+	<!-- 수정 -->
+	<update id="updateEmp" parameterType="dto.Emp">
+		update emp set
+				ename = #{ename},
+				job = #{job},
+				mgr = #{mgr},
+				sal = #{sal},
+				comm = #{comm},
+				deptno = #{deptno}
+				where empno = #{empno}
+	</update>
+	<!-- 삭제 -->
+	<delete id="deleteEmp">
+		delete from emp where empno = #{empno}
+	</delete>
+</mapper>

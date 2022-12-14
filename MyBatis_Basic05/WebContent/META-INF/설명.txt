@@ -1,0 +1,66 @@
+1. 정의
+MyBatis 는 개발자가 지정한 SQL, 저장프로시저 그리고 몇가지 고급 매핑을 지원하는 퍼시스턴스 프레임워크이다.
+MyBatis 는 JDBC코드와 수동으로 셋팅하는 파라미터와 결과 매핑을 제거한다. MyBatis 는 데이터베이스 레코드에
+원시타입과 Map인터페이스 그리고 자바 POJO를 설정하고 매핑하기 위해 XML과 애노테이션을 사용할 수 있다.
+
+2. 설정 (MapConfig)
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<environments default="development">
+<environment id="development">
+<transactionManager type="JDBC"/>
+<dataSource type="POOLED">
+<property name="driver" value="${driver}"/>
+<property name="url" value="${url}"/>
+<property name="username" value="${username}"/>
+<property name="password" value="${password}"/>
+</dataSource>
+</environment>
+</environments>
+<mappers>
+<mapper resource="org/mybatis/example/BlogMapper.xml"/>
+</mappers>
+</configuration>
+
+3. DB연결 설정
+driver=oracle.jdbc.driver.OracleDriver
+url=jdbc:oracle:thin:@localhost:1521:XE
+username=kosta
+password=1004
+
+
+4. Mapper 설정
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.BlogMapper">
+<select id="selectBlog" parameterType="int" resultType="Blog">
+select * from Blog where id = #{id}
+</select>
+</mapper>
+
+key point
+
+#스코프와 생명주기
+스코프와 생명주기에 대해서 이해하는것은 매우 중요하며 스코프와 생명주기를 잘못 사용하는 것은 다양한 문제를 발생 시킬 수 있다.
+
+#SqlSessionFactoryBuilder
+ 이 클래스는 인스턴스화사용되고 버려지는 클래스이다. 그러므로 SqlSessionFactory를 생성한 후 유지할 필요는 없게된다. 따라서 SqlSessionFactoryBuilder 인스턴스의 가장 좋은 스코프는 메서드 스코프(메서드내 지역변수)이다. 여러개의 SqlSessionFactory인스턴스를 빌드하기 위해 SqlSessionFactoryBuilder를 재사용 할 수도 있지만 유지하지 않는것이 가장 좋다.
+
+#SqlSessionFactory
+ SqlSessionFactory는 애플리케이션을 실행하는 동안 존재해야만한다. 따라서 삭제하거나 재생성할 필요가 없다. 애플리케이션이 실행되는 동안 여러차례 SqlSessionFactory를 다시 빌드하지 않는것이 가장 좋은 형태이며, 재빌드하는 형태는 결과적으로 문제를 발생시킬 수 있는 좋지않은 형태이다.그렇기 때문에 SqlSessionFactory의 가장 좋은 스코프는 애플리케이션 스코프 이며, 애플리케이션 스코프로 유지하기 위한 다양한 방법이 존재한다. 가장 간단한 방법은 싱글턴 패턴이나 static 싱글턴 패턴을 사용하는 것이다.
+
+#SqlSession
+ 각각의 쓰레드는 자체적으로 SqlSession 인스턴스를 가져야 한다. SqlSession인스턴스는 공유되지 않고 쓰레드내에서도 안전하지도 않다. 그러므로 가장 좋은 스코프는 요청 또는 메서드 스코프이다. 또한 SqlSession은 요청처리후 닫아주는것이 매우 중요한 부분이며, 언제나 finally블록을 사용하여 닫아야 한다.
+
+#Mapper 인스턴스
+  mapper는 매핑된 구문을 바인딩 하기 위해 만들어야할 인터페이스 이다. mapper 인터페이스의 인스턴스는 SqlSession에서 생성하기 때문에, SqlSession과 동일한 스코프가 가장 좋은 스코프이다. Mapper인스턴스는 사용할 메서드가 호출되면 생성되고 끝난다. 그렇기 때문에 명시적으로 닫아줄 필요는 없다.
+  
+  
+  
+  
+  

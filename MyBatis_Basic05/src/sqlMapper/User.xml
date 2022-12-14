@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Emp">
+	<!-- 원칙 :  parameterType="String" 
+	     parameter 1개 생략 일반적으로 ...
+	 -->
+	<select id="getone"  resultType="kr.or.bit.dto.User">
+		select empno, ename from emp where ename=#{ename}
+	</select>
+	
+	<!-- return multi row >> User 객체 여러개 >> List<User> (x) -->
+	<select id="getUsers" resultType="kr.or.bit.dto.User">
+		select empno , ename from emp
+	</select>
+</mapper>
+
+
+
