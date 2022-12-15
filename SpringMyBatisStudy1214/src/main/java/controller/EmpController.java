@@ -68,9 +68,9 @@ public class EmpController {
 	}
 	//수정 처리
 	@PostMapping("edit.do")
-	public String updateEmpOk(Emp emp){
-		System.out.println("edit.do - post");
-		System.out.println(emp);
+	public String updateEmpOk(Emp emp, String empno){
+		System.out.println("empno >> " + empno);
+		System.out.println("emp >> " + emp);
 		return empservice.updateEmp(emp);
 	}
 	//삭제 처리

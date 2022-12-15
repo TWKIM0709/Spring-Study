@@ -5,14 +5,32 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-<!-- 공통 DB작업  -->
- <bean id="driverManagerDataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<!-- 기본 DB작업  + log4j -->
+<!--  <bean id="driverManagerDataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+ 	<property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE" />
+ 	<property name="username"        value="kosa"></property>
+ 	<property name="password"        value="1004"></property>
+ </bean>  -->
+  
+  <!-- 그냥 히카리만 -->
+   <!-- <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
  	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
- 	<property name="url"             value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+ 	<property name="jdbcUrl"         value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+ 	<property name="username"        value="kosa"></property>
+ 	<property name="password"        value="1004"></property>
+ </bean>  -->
+  
+  <!-- 히카리 + log4j-->
+   <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+ 	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+ 	<property name="jdbcUrl"         value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"></property>
  	<property name="username"        value="kosa"></property>
  	<property name="password"        value="1004"></property>
  </bean> 
-  
+ <bean id="driverManagerDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig"></constructor-arg>
+ </bean>
  <!-- JDBC Template -->
  <bean id=""  class="org.springframework.jdbc.core.JdbcTemplate">
  	<property name="dataSource"  ref="driverManagerDataSource" />

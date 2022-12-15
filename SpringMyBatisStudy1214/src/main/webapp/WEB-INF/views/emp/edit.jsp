@@ -86,7 +86,7 @@ a {
 
 </head>
 <body>
-		<form action="" method="post">
+		<form action="edit.do" method="post">
    <table class="table">
    <thead>
          <tr>
@@ -102,11 +102,11 @@ a {
       </thead>
       <tbody>
       		<tr>
-	            <th scope="col"><input type="text" name="empno" value="${emp.empno }" ></th>
+	            <th scope="col"><input type="text" name="empno" value="${emp.empno }"  disabled><input type="hidden"  name="empno" value="${emp.empno }"/></th>
 	            <th scope="col"><input type="text" name="ename" value="${emp.ename }"></th>
 	            <th scope="col"><input type="text" name="job" value="${emp.job }"></th>
 	            <th scope="col"><input type="number" name="mgr" value="${emp.mgr }"></th>
-	            <th scope="col"><input type="date" name="hiredate" value="${emp.hiredate }"  disabled></th>
+	            <th scope="col"><input type="date" name="hiredate" value="${emp.hiredate }" ></th>
 	            <th scope="col"><input type="number" name="sal" value="${emp.sal }"></th>
 	            <th scope="col"><input type="number" name="comm" value="${emp.comm }"></th>
 	            <th scope="col"><input type="number" name="deptno" value="${emp.deptno }"></th>

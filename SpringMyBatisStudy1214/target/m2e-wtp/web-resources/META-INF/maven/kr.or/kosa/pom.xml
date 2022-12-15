@@ -25,6 +25,12 @@
 	</repositories>
 
 	<dependencies>
+	<!-- 히카리(커넥션풀) Connection Pool -->
+		    <dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>3.4.5</version>
+		</dependency>
 	<!-- 롬복? -->
 	<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 <dependency>
@@ -33,7 +39,12 @@
     <version>1.18.12</version>
     <scope>provided</scope>
 </dependency>
-	
+	<!-- SQL LOG  -->
+		<dependency>
+		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+		    <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+		    <version>1.16</version>
+		</dependency>
 	<!-- MyBatis -->
 	<dependency>
 	  <groupId>org.mybatis</groupId>

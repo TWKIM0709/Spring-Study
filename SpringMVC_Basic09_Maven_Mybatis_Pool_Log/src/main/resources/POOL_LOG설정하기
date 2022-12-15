@@ -1,0 +1,58 @@
+1.
+pom.xml
+<!-- SQL LOG  -->
+		<dependency>
+		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+		    <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+		    <version>1.16</version>
+		</dependency>
+추가하기
+
+2.
+DB연결 설정에서 DriverSpy 적용하기
+<!-- <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" /> -->
+ 	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+ 	<property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE" />
+ 	
+3.설정파일 
+log4j.xml 같은 경로에
+log4jdbc.log4j2.properties 파일 생성
+
+log4jdbc.spylogdelegator.name=net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
+
+
+xml 추가
+<!-- SQL Logger -->
+
+	<logger name="jdbc.sqltiming" additivity="false">
+		<level value="warn" />
+		<appender-ref ref="console"/> 
+	</logger>
+
+	
+
+	<logger name="jdbc.sqlonly" additivity="false"> 
+		<level value="info"/> 
+		<appender-ref ref="console"/> 
+	</logger>
+
+	
+
+	<logger name="jdbc.audit" additivity="false"> 
+		<level value="warn"/>  
+		<appender-ref ref="console"/> 
+	</logger> 
+
+    
+
+	<logger name="jdbc.resultset" additivity="false">
+		<level value="warn" />
+		<appender-ref ref="console"/> 
+	</logger>
+
+     
+
+	<logger name="jdbc.resultsettable" additivity="false"> 
+		<level value="info"/>  
+		<appender-ref ref="console"/> 
+	</logger> 

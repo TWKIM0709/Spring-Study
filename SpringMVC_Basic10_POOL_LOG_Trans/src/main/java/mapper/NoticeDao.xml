@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  
+[key point]
+Mybatis 사용 프로젝트 진행시
+
+1. mapper namespace 이름 : DAO 가지는 interface 이름을 그대로
+2. <select id="" 이름을  interface 가지는 함수명과 동일
+result : interface 와 mapper 있으면 실행
+
+	//게시물 개수
+	public int getCount(String field, String query) throws ClassNotFoundException, SQLException;
+	//전체 게시물
+	public List<Notice> getNotices(int page, String field, String query) throws ClassNotFoundException, SQLException;	
+	//게시물 상세
+	public Notice getNotice(String seq) throws ClassNotFoundException, SQLException;
+	//게시물 삭제
+	public int delete(String seq) throws ClassNotFoundException, SQLException;	
+	//게시물 수정
+	public int update(Notice notice) throws ClassNotFoundException, SQLException;	
+	//게시물 입력
+	public int insert(Notice n) throws ClassNotFoundException, SQLException ;
+	//포인트 추가
+	public int updateOfMemberPoint(String userid) throws ClassNotFoundException, SQLException ;
+	
+-->
+<!-- ************** <mappter namespace>는 interface 이름과 동일하게 ***************-->
+<mapper namespace="dao.NoticeDao">
+	<!--
+	 public int getCount(String field, String query)
+	 	1. parameter가 1개 				: 생략 or paramterType="타입"
+	 	2. parameter가 DTO 객체 	: parameterType="vo.Notice"
+	 	3. parameter가 DTO가 아니고 2개 이상인 경우...
+	 	3.1 hashMap >> map.put(key,value)로 들고오기 >> parameterType="hashMap"
+	 	3.2 MyBatis는 parameter에 대해서 값을 read 할 때 param1, param2, param3 ... >> MyBatis가 제공하는 키워드
+	 			ex) getCount(String field, String query)
+	 					param1 > field
+	 					param2 > query
+	 			parameter 1개는 param 키워드 사용 불가...
+	 	
+	  -->
+		<select id="getCount" resultType="int">
+			SELECT COUNT(*) CNT FROM NOTICES WHERE ${param1} LIKE '%${param2}%'
+		</select>
+		
+		<!--
+		 public List<Notice> getNotices(int page, String field, String query) 
+		 		int srow = 1 + (page-1)*5;
+				int erow = 5 + (page-1)*5; 
+		 -->
+		 <select id="getNotices" resultType="vo.Notice">
+		 		SELECT * FROM
+					(SELECT ROWNUM NUM, N.* 
+				    FROM (SELECT * 
+				            FROM NOTICES 
+				            WHERE ${param2} LIKE '%${param3}%' ORDER BY REGDATE DESC
+				            )N
+				        )WHERE NUM BETWEEN 1 + (${param1}-1)*5 AND 5 + (${param1}-1)*5
+		 </select>
+		 
+		 <!-- public Notice getNotice(String seq)  -->
+		<select id="getNotice" resultType="vo.Notice">
+			SELECT seq, title, writer, content, regdate, hit , fileSrc, fileSrc2
+			 FROM notices WHERE seq=#{seq}
+		</select>
+		
+		<!-- public int delete(String seq) -->
+		<delete id="delete">
+			DELETE FROM notices WHERE seq=#{seq}
+		</delete>
+		
+		<!-- 
+		public int update(Notice notice) 
+		 게시물 수정
+		 파일 수정 .. : null, null
+		 					1.jpg, null
+		 					null, 2.jpg
+		 					1.jpg, 2.jpg
+		 특정한 값이 넘어오지 않으면 null값으로 처리하는 방법
+		-->
+		<update id="update"  parameterType="vo.Notice">
+			update notices set 
+			title = #{title},
+			content = #{content},
+			filesrc=#{fileSrc , jdbcType=VARCHAR},
+			filesrc2=#{fileSrc2 , jdbcType=VARCHAR}
+			 where seq=#{seq}
+		</update>
+		
+		<!-- public int insert(Notice n) -->
+		<insert id="insert" parameterType="vo.Notice">
+			<selectKey order="BEFORE" keyProperty="seq" resultType="String">
+				select max(to_number(seq))+1 from notices
+			</selectKey>
+			insert into notices(seq, title, content, writer, regdate, hit, filesrc, filesrc2)
+			values(#{seq}, #{title}, #{content}, 'kosauser' , sysdate , 0 , #{fileSrc}, #{fileSrc2})
+		</insert>
+		
+		<!-- public int updateOfMemberPoint(String userid) -->
+		<update id="updateOfMemberPoint">
+			update member
+			set point = nvl(point,0) + 1
+			where userid = #{userid}
+		</update>
+</mapper>

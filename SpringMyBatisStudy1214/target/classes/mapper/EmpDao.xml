@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 상세보기 -->
 	<select id="getEmpByEmpno" resultType="dto.Emp">
-		select empno , ename, job, mgr, hiredate , sal, comm, deptno from emp where empno like '%${empno}%'
+		select empno , ename, job, mgr, hiredate , sal, comm, deptno from emp where empno = #{empno}
 	</select>
 	<!-- 페이징 전체 조회 -->
 	<select id="getPagedEmpList" resultType="dto.Emp">
@@ -35,6 +35,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				sal = #{sal},
 				comm = #{comm},
 				deptno = #{deptno}
+				<if test="hiredate != null">
+				, hiredate = #{hiredate} 
+				</if>
 				where empno = #{empno}
 	</update>
 	<!-- 삭제 -->

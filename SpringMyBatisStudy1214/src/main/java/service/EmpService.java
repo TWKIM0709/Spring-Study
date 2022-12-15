@@ -61,6 +61,7 @@ public class EmpService {
 	}
 	//수정
 	public String updateEmp(Emp emp) {
+		System.out.println("[input Emp] >>" + emp);
 		try {
 			EmpDao dao = sqlSession.getMapper(EmpDao.class);
 			dao.updateEmp(emp);
