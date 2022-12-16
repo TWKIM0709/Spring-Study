@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+<context:annotation-config/>
+<context:component-scan base-package="ncontroller"/>
+<context:component-scan base-package="dao"/>
+<context:component-scan base-package="service"/>
+
+<!-- 트랜젝션 처리 -->
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<property name="dataSource" ref="driverManagerDataSource" /> <!-- ref = JDBC bean 객체 id -->
+</bean>
+<!-- 어노테이션 적용 설정 -->
+<tx:annotation-driven transaction-manager="transactionManager"/>
+<!-- 인터셉터 연습 -->
+<!-- 로그인 체크 인터셉터 -->
+<!-- 게시글 상세보기는 회원만 할 수 있다. -->
+<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="/customer/noticeDetail.htm"/>
+		<bean class="interceptor.UserCheckInterceptor"></bean>
+	</mvc:interceptor>
+</mvc:interceptors>
+<!-- 관리자 체크 인터셉터 -->
+<!-- 글쓰기 , 수정 , 삭제는 로그인이 되어 있고, 등급이 관리자인 유저만 할 수 있다. -->
+<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="/customer/noticeReg.htm"/>
+		<mvc:mapping path="/customer/noticeEdit.htm"/>
+		<mvc:mapping path="/customer/noticeDel.htm"/>
+			<bean class="interceptor.AdminCheckInterceptor"></bean>
+	</mvc:interceptor>
+</mvc:interceptors>
+<!-- 로그인 세션 처리 인터셉터 -->
+<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="/userlogin.htm"/>
+		<mvc:mapping path="/adminlogin.htm"/>
+		<bean class="interceptor.LoginInterceptor"></bean>
+	</mvc:interceptor>
+</mvc:interceptors>
+</beans>

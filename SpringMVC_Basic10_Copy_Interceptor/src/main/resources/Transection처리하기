@@ -1,0 +1,100 @@
+FrontController -> mapping -> CustomerController (함수단위 매핑) -함수 (모든 로직 ...DAO ,DTO ...)
+IndexController
+JoinController
+CustomerController -> Service -> DB(DAO) 작업 -> Service -> CustomerController -> VIEW단 (View : Model) 
+***** 하나의 서비스가 여러개의 업무를 처리 해야 ...
+***** 기존 방식은 트랜잭션 처리 어려움 ... 최소 하나 이상의 없무
+
+​
+1. 은행 입출금
+2. 회원 게시판 글쓰면 .... POINT 증가하는 비지니스
+
+begin
+	insert board      ...
+	update member ...
+end
+commit  , rollback
+
+
+1. Service 단 추가 : DB작업 분리 (Mybatis)
+2. Controller 수정 하기 : Service 객체가 필요 >> sqlsession(x) 
+----------------------------------------------------
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+<bean id="driverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+<property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"></property>
+<property name="username" value="springuser"></property>
+<property name="password" value="1004"></property>
+</bean>
+
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+<property name="dataSource" ref="driverManagerDataSource" />
+</bean>
+
+<!-- 공통빈 --> 
+<bean id="multipartResolver" 
+class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+<property name="maxUploadSize" value="10485760"/>
+</bean>
+
+<!-- Transaction 만들기 -->
+
+<bean id="transactionManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<property name="dataSource" ref="driverManagerDataSource" /> 
+</bean>
+
+<tx:annotation-driven transaction-manager="transactionManager"/> 
+//@Transactional
+</beans>
+
+트랜잭션 처리하기
+xmlns:tx="http://www.springframework.org/schema/tx"
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd"
+
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<beans:property name="dataSource" ref="dataSource" />
+</bean>
+
+<tx:annotation-driven transaction-manager="transactionManager" />
+
+--------------------------------------------------------------------------- 
+테이블 변경
+alter table member
+add point number;
+
+alter table member 
+add constraint ck_member_hit check(point < 3);
+​
+DAO
+update member
+set point = nvl(point,0) + 1
+where userid = 'kglim'; 
+​
+--게시판 글쓰기  (kglim)
+insert board    10번글
+update point    >> 1
+
+insert board    11번글
+update point   >> 2
+
+insert board    12번글
+update point  >> 3        check 제약 실패   (12번글 rollback)
+
+->NoticeDao 인터페이스 함수 추가
+->NoticeDao.xml 에 update 구문 추가
+->CustomerService TEST ...
+
+​->CustomerService
+->CustomerController 변경작업
