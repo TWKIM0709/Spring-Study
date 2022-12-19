@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+<!--  
+xml 파일
+IOC 컨테이너에 적재될 bean 객체 생성과 injection (DI)
+
+1. 필용한 controller 생성하고 bean 객체 생성 , injection
+2. 현재 >> 하나의 클래스가 method 단위로 요청을 처리하는 것은 조금 뒤에 ...
+   현재 controller 하나당 요청 하나를 처리 ....
+   결과 : 하나의 클래스가 method 단위로 요청을 처리
+   
+ controller 요청당 한개
+   요청 :   게시판 목록보기 (행위 업무)
+                게시판 글쓰기
+                게시판 글 수정하기
+          
+  localhost:8090/website/customer/notice.htm
+  
+  @AutoWired
+-->	
+<!-- 모든 컨트롤러가 공통 사용 DAO 빈 객체  참조-->
+<context:annotation-config />
+<context:component-scan base-package="ncontroller"  />
+<context:component-scan base-package="dao"  />
+<context:component-scan base-package="service"  />
+
+<!-- 파일 업로드 보조(반드시)  -->
+<bean  id="multipartResolver"    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize"    value="10485760"></property>
+		<property name="defaultEncoding"  value="UTF-8"></property>
+</bean>	
+</beans> 
+
+

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+<!--  
+  Root 공통빈
+  DB관련 작업 (드라이버 로딩 , 템플릿 객체)
+  view 작업 (공통 UI) (internalResourceViewResolver)
+  
+  import org.springframework.jdbc.datasource.DriverManagerDataSource;
+  import org.springframework.jdbc.core.JdbcTemplate;
+  
+  
+ 
+-->
+<!-- 공통 DB작업  -->
+<!--  
+ <bean id="driverManagerDataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+ 	<property name="url"             value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+ 	<property name="username"        value="springuser"></property>
+ 	<property name="password"        value="1004"></property>
+ </bean> 
+-->  
+<bean id="driverManagerDataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+ 	<property name="url"             value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE" />
+ 	<property name="username"        value="springuser"></property>
+ 	<property name="password"        value="1004"></property>
+ </bean> 
+ <!-- JDBC Template -->
+ <bean id=""  class="org.springframework.jdbc.core.JdbcTemplate">
+ 	<property name="dataSource"  ref="driverManagerDataSource" />
+ </bean> 
+  
+ 
+ <!-- MyBatis 설정 START  -->
+ <bean id="sqlSessionFactoryBean"  class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="driverManagerDataSource"></property>
+    <property name="mapperLocations" value="classpath*:mapper/*xml" />
+</bean>
+
+ <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+  	<constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+ </bean> 
+ <!-- MyBatis 설정  END  -->
+ 
+ 
+ <!-- 공통 UI  -->
+ <!-- 나중에 추가 형태 -->
+  <bean id="internalResourceViewResolver"  class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	 		<property name="prefix">
+	 			<value>/WEB-INF/views/</value>
+	 		</property>
+	 		<property name="suffix">
+	 			<value>.jsp</value>
+	 		</property>
+  </bean>
+ 
+ 
+ 
+ <!-- 공통 파일 업로드 -->
+ <!-- 여러개의 게시판이 업로드 처리한다면  -->
+</beans>
+
+
+
+
+
+
+
+
+
