@@ -572,3 +572,31 @@ INSERT INTO roll VALUES('admin','ROLE_USER');
 INSERT INTO roll VALUES('admin','ROLE_ADMIN');
 INSERT INTO roll VALUES('kglim','ROLE_USER');
 COMMIT;   
+
+회원가입 - 롤 테이블 트리거 만들어본거
+create or replace trigger memberrolladd
+after insert on member
+for each row
+begin
+    if(:NEW.userid = 'admin') then
+        insert into roll values(:NEW.userid,'ROLL_USER');
+        insert into roll values(:NEW.userid,'ROLL_ADMIN');
+    else 
+    insert into roll values(:NEW.userid,'ROLL_USER');
+    end if;
+end;
+
+create or replace trigger memberrolladd
+after insert on member
+for each row
+BEGIN
+    IF(:NEW.userid = 'admin') THEN  
+        insert all
+        into roll values(:NEW.userid ,'ROLE_ADMIN')
+        into roll values(:NEW.userid ,'ROLE_USER')
+        select * from dual;
+    ELSE
+        insert into roll(userid, role_name)
+        values(:NEW.userid ,'ROLE_USER');
+    END IF;
+END;

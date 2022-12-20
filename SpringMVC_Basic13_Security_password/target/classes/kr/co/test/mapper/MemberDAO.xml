@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.test.model.dao.MemberDAO">
+	<insert id="insertMember" parameterType="kr.co.test.model.dto.Member">
+		<!-- insert into member(userid, pwd, name, gender, birth, is_lunar, cphone, email, habit, regdate, point)
+		values(#{userid}, #{pwd}, #{name}, #{gender}, #{birth}, #{isLunar}, #{cphone}, #{email}, #{habit}, sysdate, 0) -->
+		insert into member(userid, pwd, name,regdate)
+		values(#{userid}, #{pwd}, #{name},sysdate)
+	</insert>
+	
+	<select id="idCheck" resultType="int">
+		select count(*) from member where userid = #{userid}
+	</select>
+	
+	<select id="loginCheck" resultType="int">
+		select count(*) from member where userid = #{param1} and pwd = #{param2}
+	</select>
+	
+	<select id="getMember" resultType="kr.co.test.model.dto.Member">
+		select * from member where userid=#{userid}
+	</select>
+	
+	<update id="updateMember">
+		update member
+		set pwd = #{pwd}, name=#{name}, cphone=#{cphone}, email=#{email}
+		where userid = #{userid}
+	</update>
+	
+</mapper>

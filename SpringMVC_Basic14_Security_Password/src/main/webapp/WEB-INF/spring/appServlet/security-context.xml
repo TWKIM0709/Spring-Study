@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security" 
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- 3단계 .... DB 적용 -->
+ <security:http auto-config="true">
+		<security:csrf disabled="true" />
+		<security:form-login 
+								login-page="/joinus/login.htm" 
+								default-target-url="/index.htm"
+								authentication-failure-url="/joinus/login.htm?error"/>
+		
+		<security:logout logout-success-url="/index.htm"/>
+	  	<security:intercept-url pattern="/customer/*Reg.htm" access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+	</security:http>
+	<security:authentication-manager>
+		<security:authentication-provider>
+				<security:jdbc-user-service data-source-ref="driverManagerDataSource"
+		   users-by-username-query="SELECT USERID, pwd AS PASSWORD, 1 enabled FROM member where userid=?" 
+		
+		   authorities-by-username-query="select m.USERID , r.ROLE_NAME  
+		           from member m join roll r 
+		           on m.userid = r.userid 
+		           where m.userid=?" />
+		           <security:password-encoder ref="bCryptPasswordEncoder"/> <!-- 암호화 된 비밀번호 처리 -->
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>
+
+

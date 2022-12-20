@@ -34,4 +34,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 		}
 		System.out.println("========== 로그인 처리 POST 인터셉터 끝==========");
 	}
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+			throws Exception {
+		// TODO Auto-generated method stub
+		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+	}
 }

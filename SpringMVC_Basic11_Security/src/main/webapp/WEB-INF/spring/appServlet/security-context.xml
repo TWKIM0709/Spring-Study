@@ -73,10 +73,11 @@ auto-config=true >> login 처리에 대한 프로세스가 자동화 된다.
 	/login 요청 처리는 여전이 spring 위임하고 있다 .....
 	기본적인 요청 주소 , parametre 값은 정해진 대호
  
- 2단계 login page custom...
   -->
   
-	<security:http auto-config="true">
+	<!--
+ 2단계 login page custom...
+  <security:http auto-config="true">
 		<security:csrf disabled="true" />
 		<security:form-login 
 								login-page="/joinus/login.htm" 
@@ -92,12 +93,33 @@ auto-config=true >> login 처리에 대한 프로세스가 자동화 된다.
 			<security:user-service>
 				<security:user name="hong" password="1004" authorities="ROLE_USER" />
 				<security:user name="admin" password="1004" authorities="ROLE_USER,ROLE_ADMIN" />
-				<!-- <security:access-denied-handler error-page="/login/accessDenied.do"/> -->
+				<security:access-denied-handler error-page="/login/accessDenied.do"/>
 			</security:user-service>
 		</security:authentication-provider>
+	</security:authentication-manager> -->
+	<!-- 3단계 .... DB 적용 -->
+ <security:http auto-config="true">
+		<security:csrf disabled="true" />
+		<security:form-login 
+								login-page="/joinus/login.htm" 
+								default-target-url="/index.htm"
+								authentication-failure-url="/joinus/login.htm?error"/>
+		
+		<security:logout logout-success-url="/index.htm"/>
+	  	<security:intercept-url pattern="/customer/*Reg.htm" access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+	</security:http>
+	<security:authentication-manager>
+		<security:authentication-provider>
+				<security:jdbc-user-service data-source-ref="driverManagerDataSource"
+		   users-by-username-query="SELECT USERID, pwd AS PASSWORD, 1 enabled FROM member where userid=?" 
+		
+		   authorities-by-username-query="select m.USERID , r.ROLE_NAME  
+		           from member m join roll r 
+		           on m.userid = r.userid 
+		           where m.userid=?" />
+		</security:authentication-provider>
 	</security:authentication-manager>
-	
- 
 </beans>
 
 
