@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/mvc
+						http://www.springframework.org/schema/mvc/spring-mvc.xsd
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/security
+						http://www.springframework.org/schema/security/spring-security.xsd
+						">
+
+<context:component-scan base-package="kosa.controller"/>
+
+<!-- 컨트롤로 사용하지 않고 View Mapping 가능  : /WEB-INF/views/index.jsp 
+          컨트롤러에서 해줘야할 특정한 작업이 없고, 요청에 대해 단순히 뷰를 보여주고 싶을 때, 사용하는 컨트롤러이다.
+          요청된 url 이 name="/index.kosta" 값과 같으면 view 를 처리한다..   
+          
+     return index;  컨트롤러의 return 값 ...
+     InternalResourceViewResolver >> /WEB-INF/views/index.jsp      
+-->
+
+<bean name="/index.kosa" class="org.springframework.web.servlet.mvc.ParameterizableViewController" >
+	<property name="viewName" value="index"></property>
+</bean>
+
+<bean name="jsonview" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+
+</beans>
