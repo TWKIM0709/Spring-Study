@@ -91,7 +91,7 @@ $('#search').on({
 							'<th>' + emp.ename +'</th>' +
 							'<th>' + emp.job +'</th>' +
 							'<th>' + emp.mgr+'</th>' +
-							'<th>' + emp.hiredate+'</th>' +
+							'<th>' + empDateFormat(new Date(emp.hiredate))+'</th>' +
 							'<th>' + emp.sal +'</th>' +
 							'<th>' + emp.comm+'</th>' +
 							'<th>' + emp.deptno+'</th>' +
@@ -166,7 +166,7 @@ function empupdateconfirm(me){
 		td +="<td><input type='text'></td>";
 		td +="<td><input type='text'></td>";
 		td +="<td><input type='text'></td>";
-		td +="<td><input type='text'></td>";
+		td +="<td><input type='text' placeholder='yyyy-MM-dd'></td>";
 		td +="<td><input type='text'></td>";
 		td +="<td><input type='text'></td>";
 		td +="<td><input type='text'></td>";
@@ -219,6 +219,11 @@ function empupdateconfirm(me){
 			}
 		});
 	}
+	
+	function empDateFormat(date){
+		return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+	}
+	
 	getList(pg,ps,search);
 </script>
 </html>

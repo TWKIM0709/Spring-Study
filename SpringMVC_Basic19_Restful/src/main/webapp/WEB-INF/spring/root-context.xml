@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+<context:annotation-config/>
+<!-- 히카리 + log4j -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		<property name="jdbcUrl"
+			value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"></property>
+		<property name="username" value="springuser"></property>
+		<property name="password" value="1004"></property>
+	</bean>
+	<bean id="driverManagerDataSource"
+		class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig"></constructor-arg>
+	</bean>
+	<!-- JDBC Template -->
+	<bean id="" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="driverManagerDataSource" />
+	</bean>
+ <!-- MyBatis 설정 START  -->
+ <bean id="sqlSessionFactoryBean"  class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="driverManagerDataSource"></property>
+    <property name="mapperLocations" value="classpath*:mapper/*xml" />
+</bean>
+
+ <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+  	<constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+ </bean> 
+ <!-- MyBatis 설정  END  -->
+ 
+ 
+ <!-- 공통 UI  -->
+ <!-- 나중에 추가 형태 -->
+  <bean id="internalResourceViewResolver"  class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	 		<property name="prefix">
+	 			<value>/WEB-INF/views/</value>
+	 		</property>
+	 		<property name="suffix">
+	 			<value>.jsp</value>
+	 		</property>
+  </bean>
+ 
+</beans>
