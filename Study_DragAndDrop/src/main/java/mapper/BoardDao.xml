@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.kosa.dao.BoardDao">
+	<select id="getBoardList" resultType="kr.or.kosa.dto.Board">
+		select no , title , step from kanbanTest order by step asc
+	</select>
+	<update id="updateBoardList" parameterType="java.util.List">
+		<foreach collection="list" index="index" item="item" open="DECLARE BEGIN"  close="END;">
+			update kanbanTest set step=${item.step} where no=${item.no} ;
+		</foreach>
+	</update>
+	<insert id="insertBoard" >
+		insert into kanbanTest values((select nvl(max(no)+1,0) from kanbanTest),#{param1},(select nvl(max(step)+1,0) from kanbanTest))
+	</insert>
+</mapper>

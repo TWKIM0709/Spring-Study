@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.kosa.dao.BoardDao">
+	<select id="getBoardList" resultType="kr.or.kosa.dto.Board">
+		select no , title , step from kanbanTest order by step asc
+	</select>
+	<update id="updateBoardList" parameterType="kr.or.kosa.dto.Board">
+			update kanbanTest set step=${step} where no=${no}
+	</update>
+	<insert id="insertBoard" >
+		insert into kanbanTest values((select no from (select ifnull(max(no)+1,0) as no from kanbanTest)no),#{param1},(select no from (select ifnull(max(step)+1,0) as no from kanbanTest)no));
+	</insert>
+</mapper>
