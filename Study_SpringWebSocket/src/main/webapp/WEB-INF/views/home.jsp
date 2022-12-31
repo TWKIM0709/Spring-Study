@@ -6,6 +6,7 @@
 	<title>Home</title>
 </head>
 <body>
-<a href="chat">채팅</a>
+<p><a href="chat">채팅(인터넷예제)</a></p>
+<p><a href="chat2">채팅2(교수님예제)</a></p>
 </body>
 </html>

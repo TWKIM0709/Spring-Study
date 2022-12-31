@@ -30,9 +30,9 @@
 <body>
 <h1>태태우톡 v0.16</h1>
 	<div id="one">
-		별명 : <input type="text" id="nickname" /> <button
-			id="enter" value="입장" >입장</button>
-			<button type="button" id="exit" value="퇴장" >퇴장</button>
+		별명 : <input type="text" id="nickname" />
+		<button id="enter" value="입장" >입장</button>
+		<button type="button" id="exit" value="퇴장" >퇴장</button>
 	</div>
 	<div id="two" >
 		<div id="chatarea"
@@ -46,8 +46,7 @@
 
 </body>
 <script>
-	one = document.getElementById("one");
-	two = document.getElementById("two");
+	// = = = = = 이벤트 등록 부분 = = = = = =
 	document.getElementById('message').addEventListener("keypress",function(event){
 		if ( event.which == 13 ) {
 	         send();
@@ -64,11 +63,13 @@
 	document.getElementById("send").addEventListener("click", function() {
 		//연결을 해제해주는 함수 호출 
 		send();
-	});//1318 1818? 1819 예제? 1314?? 1814??
-	var websocket;
+	});
+			
+	// = = = = = WebSocket 함수 부분 = = = = = =
+	let websocket; //WebSocket 변수
+	
 	//입장 버튼을 눌렀을 때 호출되는 함수 
 	function connect() {
-		/* websocket = new WebSocket("ws://localhost:8090/kosa/chat-ws"); */
 		websocket = new WebSocket("ws://192.168.0.32:8090/kosa/chat-ws");
 		console.log(websocket);
 		console.log("websocket");
