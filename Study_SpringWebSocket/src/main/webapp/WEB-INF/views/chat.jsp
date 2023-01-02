@@ -70,7 +70,8 @@
 	
 	//입장 버튼을 눌렀을 때 호출되는 함수 
 	function connect() {
-		websocket = new WebSocket("ws://192.168.0.32:8090/kosa/chat-ws");
+		//websocket = new WebSocket("ws://192.168.0.32:8090/kosa/chat-ws");
+		websocket = new WebSocket("ws://" + location.host+"/kosa/chat-ws");
 		console.log(websocket);
 		console.log("websocket");
 		// 192.168.0.32

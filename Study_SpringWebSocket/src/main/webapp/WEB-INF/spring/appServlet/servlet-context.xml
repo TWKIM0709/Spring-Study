@@ -20,9 +20,15 @@
 	</beans:bean>
 	<!-- WebSocketHandler Bean -->
 	<beans:bean id="chatHandler" class="kr.or.kosa.ChatSocket"/>
+	<beans:bean id="chatHandler2" class="kr.or.kosa.ChatSocket2"/>
+	
+	<websocket:handlers>
+		<websocket:mapping handler="chatHandler" path="/chat-ws"/>
+		<websocket:sockjs/>
+	</websocket:handlers>
 	
 	<websocket:handlers allowed-origins="/*">
-		<websocket:mapping handler="chatHandler" path="/chat-ws"/>
+		<websocket:mapping handler="chatHandler2" path="/chat"/>
 		<websocket:sockjs websocket-enabled="true"/>
 	</websocket:handlers>
 	

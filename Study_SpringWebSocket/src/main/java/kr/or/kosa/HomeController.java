@@ -29,4 +29,8 @@ public class HomeController {
 	public String chat2() {
 		return "chat2";
 	}
+	@GetMapping("chat3")
+	public String chat3() {
+		return "chat3";
+	}
 }
