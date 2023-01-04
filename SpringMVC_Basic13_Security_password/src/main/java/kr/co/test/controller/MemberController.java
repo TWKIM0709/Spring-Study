@@ -31,7 +31,9 @@ public class MemberController {
 	@RequestMapping(value="memberconfirm.htm",method=RequestMethod.POST)
 	public String memberConfirm(@RequestParam("password") String rawPassword,	Principal principal){
 		String viewpage="";
-		
+		System.out.println("+++++++++++====================+++++++++++++++");
+		System.out.println("p : " + principal);
+		 
 		//회원정보
 		Member member = service.getMember(principal.getName());
 		

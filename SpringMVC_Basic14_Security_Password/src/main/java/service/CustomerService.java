@@ -96,7 +96,7 @@ public class CustomerService{
 	    List<CommonsMultipartFile> files = n.getFiles();
 	    List<String> filenames = new ArrayList<String>(); //파일명 관리
 	    
-	    
+	    System.out.println("aaaa" + principal);
 	    
 	    if(files != null  && files.size() > 0) {  //1개라 업로드된 파일이 존재하면
 			for(CommonsMultipartFile  mutifile  : files) {

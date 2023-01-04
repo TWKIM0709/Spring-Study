@@ -14,6 +14,8 @@
 								default-target-url="/index.htm"
 								authentication-failure-url="/joinus/login.htm?error"/>
 		
+		<!-- login.do login login.htm -->
+		
 		<security:logout logout-success-url="/index.htm"/>
 	  	<security:intercept-url pattern="/customer/*Reg.htm" access="hasRole('ROLE_USER')" />
 		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
