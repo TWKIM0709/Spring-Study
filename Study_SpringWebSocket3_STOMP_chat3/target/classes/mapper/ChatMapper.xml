@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.ChatDao">
+	<select id="getAllChat" resultType="dto.Greeting" >
+		select chat_name, chat_content from roomchat where chat_room = ${param1} order by chat_no desc
+	</select>
+	<insert id="insertChat" parameterType="dto.ChatMessage">
+		insert into roomchat(chat_no,chat_room, chat_name, chat_content) values (CHAT_NO_SEQ.nextval, ${roomid},#{name}, #{content})
+	</insert>
+</mapper>
