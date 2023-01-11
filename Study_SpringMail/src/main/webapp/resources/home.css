@@ -14,7 +14,7 @@
   padding: 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
+} 
 .form input {
   font-family: "Roboto", sans-serif;
   outline: 0;
@@ -32,6 +32,7 @@
   outline: 0;
   background: #4CAF50;
   width: 100%;
+  margin: 0 0 15px;
   border: 0;
   padding: 15px;
   color: #FFFFFF;
@@ -44,7 +45,7 @@
   background: #43A047;
 }
 .form .message {
-  margin: 15px 0 0;
+  margin: 15px 0 15px 0;
   color: #b3b3b3;
   font-size: 12px;
 }
@@ -95,4 +96,10 @@ body {
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
+}
+.timer{
+	width:50%;
+}
+.codeCheck{
+	display:none;
 }

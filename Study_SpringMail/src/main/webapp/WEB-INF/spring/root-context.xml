@@ -6,8 +6,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-	
-	<context:property-placeholder location="/resources/DB.properties"/>
+		
+	<context:property-placeholder location="/resources/xml.properties"/>
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	  <!-- 히카리 + log4j-->
