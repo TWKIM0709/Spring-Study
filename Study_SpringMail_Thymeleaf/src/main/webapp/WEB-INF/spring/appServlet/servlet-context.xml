@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+	<mvc:annotation-driven />
+	<context:component-scan
+		base-package="kr.or.kosa" />
+	<mvc:resources mapping="/resources/**"
+		location="/resources/" />
+
+
+	<!-- Thymeleaf -->
+	<bean id="emailTemplateResolver"
+		class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+		<!-- ClassLoaderTemplateResolver의 기본 경로는 소스 경로 즉 /WEB-INF/classes 부터 시작이다. -->
+		<property name="prefix" value="templates/" />
+		<property name="suffix" value=".html" />
+		<property name="templateMode" value="HTML5" />
+		<property name="characterEncoding" value="UTF-8" />
+		<!-- <property name="cacheable" value="false" /> -->
+		<property name="order" value="1" />
+	</bean>
+	<!-- ServletContextTemplateResolver는 sitemesh나 tiles와 경로 설정은 똑같이 하면 된다. 
+		Jrebel 적용시 ClassLoaderTemplateResolver는 cacheable를 false로 해도 적용이 되지 않기 때문에 
+		ServletTemplateResolver로 테스트 후 바꿔도 된다. -->
+	<bean id="webTemplateResolver"
+		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+		<property name="prefix"
+			value="/WEB-INF/presentation/jsp/web/templates/" />
+		<property name="suffix" value=".html" />
+		<property name="templateMode" value="HTML5" />
+		<property name="characterEncoding" value="UTF-8" />
+		<!-- <property name="cacheable" value="false" /> -->
+		<property name="order" value="2" />
+	</bean>
+	<bean id="templateEngine"
+		class="org.thymeleaf.spring3.SpringTemplateEngine">
+		<property name="templateResolvers">
+			<set>
+				<ref bean="emailTemplateResolver" />
+				<ref bean="webTemplateResolver" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- Resolver -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+</beans>
