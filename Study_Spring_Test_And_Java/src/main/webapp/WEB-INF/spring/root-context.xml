@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		
+	<context:property-placeholder location="/resources/xml.properties"/>
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	  <!-- 히카리 + log4j-->
+   <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	 	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+	 	<property name="jdbcUrl"         value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"></property>
+	 	<property name="username"><value>${oracle.username}</value></property>
+	 	<property name="password" ><value>${oracle.password}</value></property>
+	 </bean> 
+	 <bean id="driverManagerDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+			<constructor-arg ref="hikariConfig"></constructor-arg>
+	 </bean>
+	 <!-- JDBC Template -->
+	 <bean id=""  class="org.springframework.jdbc.core.JdbcTemplate">
+	 	<property name="dataSource"  ref="driverManagerDataSource" />
+	 </bean> 
+	
+	<!-- MyBatis 설정하기 -->
+	<bean id="sqlSessionFactoryBean"  class="org.mybatis.spring.SqlSessionFactoryBean">
+	    <property name="dataSource" ref="driverManagerDataSource"></property>
+	    <property name="mapperLocations" value="classpath*:mapper/*xml" />
+	</bean>
+
+	<!-- mail -->
+<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" ><value>${mail.host}</value></property>
+		<property name="port"><value>${mail.port}</value></property>
+		<property name="username" ><value>${mail.username}</value></property>
+		<property name="password" ><value>${mail.password}</value></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.mime.charset">UTF-8</prop>
+				<prop key="mail.transport.protocol">smtp</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+	 <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	  <constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+	 </bean>
+	 
+
+	<!-- 파일 업로드 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10485760"></property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
+	
+</beans>
